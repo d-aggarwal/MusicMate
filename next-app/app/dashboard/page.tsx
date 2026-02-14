@@ -59,12 +59,10 @@ function DashboardContent() {
         setUserLoading(false);
       }
     }
-    if (session?.user) {
+    if (status === "authenticated") {
       fetchUser();
-    } else if (status === "authenticated") {
-      setUserLoading(false);
     }
-  }, [session, status]);
+  }, [status]);
 
   // Fetch streams + active stream
   const nowPlayingRef = useRef(nowPlaying);
