@@ -27,9 +27,34 @@ export async function POST(request: NextRequest) {
     console.log(data);
 
     const extractedId = data.url.split('v=')[1]?.split('&')[0];
-    const res = await youtubesearchapi.GetVideoDetails(extractedId);
-    const thumbnails = res.thumbnail.thumbnails;
-    thumbnails.sort((a: {width: number}, b: {width: number}) => a.width - b.width);
+    if (!extractedId) {
+        return NextResponse.json({
+            message: 'Could not extract video ID from URL'
+        }, {
+            status: 411
+        });
+    }
+
+    let title = "Unknown Title";
+    let smallImg = `https://img.youtube.com/vi/${extractedId}/mqdefault.jpg`;
+    let bigImg = `https://img.youtube.com/vi/${extractedId}/hqdefault.jpg`;
+
+    try {
+        const res = await youtubesearchapi.GetVideoDetails(extractedId);
+        if (res?.title) {
+            title = res.title;
+        }
+        if (res?.thumbnail?.thumbnails?.length > 0) {
+            const thumbnails = res.thumbnail.thumbnails;
+            thumbnails.sort((a: {width: number}, b: {width: number}) => a.width - b.width);
+            smallImg = thumbnails.length > 1
+                ? thumbnails[thumbnails.length - 2].url
+                : thumbnails[thumbnails.length - 1].url;
+            bigImg = thumbnails[thumbnails.length - 1].url;
+        }
+    } catch (ytError) {
+        console.error("YouTube API error, using fallback thumbnails:", ytError);
+    }
 
     await prismaClient.stream.create({
         data: {
@@ -37,15 +62,9 @@ export async function POST(request: NextRequest) {
                 url: data.url,
                 extractedId,
                 type: "Youtube",
-                title: res.title ?? "Can't find video",
-                smallImg:
-                    (thumbnails.length > 1
-                    ? thumbnails[thumbnails.length - 2].url
-                    : thumbnails[thumbnails.length - 1].url) ??
-                    "https://cdn.pixabay.com/photo/2024/02/28/07/42/european-shorthair-8601492_640.jpg",
-                bigImg:
-                    thumbnails[thumbnails.length - 1].url ??
-                    "https://cdn.pixabay.com/photo/2024/02/28/07/42/european-shorthair-8601492_640.jpg",
+                title,
+                smallImg,
+                bigImg,
             }
         });
         return NextResponse.json({
