@@ -11,15 +11,13 @@ A real-time collaborative music streaming platform where creators share their qu
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-336791?style=for-the-badge&logo=postgresql&logoColor=white)](https://postgresql.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://typescriptlang.org/)
 
----
-
 **[Report Bug](https://github.com/d-aggarwal/MusicMate/issues) · [Request Feature](https://github.com/d-aggarwal/MusicMate/issues)**
 
 </div>
 
 <br/>
 
-## ✨ Features
+## Features
 
 | Feature | Description |
 |---------|-------------|
@@ -32,20 +30,7 @@ A real-time collaborative music streaming platform where creators share their qu
 
 <br/>
 
-## 🏗️ Tech Stack
-
-```
-Frontend       →  Next.js 16 (App Router) + React 19
-Styling        →  CSS Variables + Inline Styles (dark theme)
-Auth           →  NextAuth.js (Google + Credentials providers)
-Database       →  PostgreSQL + Prisma ORM
-Video Player   →  YouTube IFrame Player API
-Language       →  TypeScript
-```
-
-<br/>
-
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -92,55 +77,6 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) and you're live! 🎉
-
-<br/>
-
-## 📁 Project Structure
-
-```
-next-app/
-├── app/
-│   ├── api/
-│   │   ├── auth/          # NextAuth endpoints
-│   │   ├── streams/       # CRUD, upvote, downvote, active, next
-│   │   └── user/          # Get current user
-│   ├── components/
-│   │   ├── AddSong.tsx    # YouTube URL input + preview
-│   │   ├── Appbar.tsx     # Navigation bar
-│   │   ├── NowPlaying.tsx # YouTube player + auto-advance
-│   │   ├── ShareButton.tsx# Copy shareable dashboard link
-│   │   └── SongQueue.tsx  # Votable song queue
-│   ├── dashboard/         # Creator & viewer dashboard
-│   ├── lib/               # DB client, auth config
-│   └── page.tsx           # Landing page
-├── prisma/
-│   └── schema.prisma      # Database schema
-└── package.json
-```
-
-<br/>
-
-## 🔄 How It Works
-
-```
-┌──────────────┐     share link     ┌──────────────┐
-│   Creator    │ ──────────────────► │    Viewer    │
-│              │                     │              │
-│  ▶ Plays     │  ◄── polls /2s ──► │  🗳️ Votes    │
-│  ▶ Skips     │                     │  ➕ Adds     │
-│  ➕ Adds     │                     │  👀 Watches  │
-└──────┬───────┘                     └──────┬───────┘
-       │                                    │
-       └────────────┐    ┌──────────────────┘
-                    ▼    ▼
-              ┌─────────────────┐
-              │   PostgreSQL    │
-              │  + Prisma ORM   │
-              │                 │
-              │  streams, votes │
-              │  activeStreamId │
-              └─────────────────┘
-```
 
 <br/>
 
