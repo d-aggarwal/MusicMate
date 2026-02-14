@@ -21,6 +21,8 @@ model User {
   provider     Provider
   streams      Stream[] @relation("user")
   upvotes      Upvote[]
+  activeStreamId String?                         
+  activeStream   Stream?  @relation("activeStream", fields: [activeStreamId], references: [id])
 }
 
 model Stream {
@@ -38,6 +40,7 @@ model Stream {
   upvotes       Upvote[]
   userId        String
   user          User           @relation(fields: [userId], references: [id], name: "user")
+  playingFor    User[]         @relation("activeStream")
 }
 
 model Upvote {

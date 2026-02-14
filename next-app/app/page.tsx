@@ -1,9 +1,11 @@
 import { Appbar } from "./components/Appbar";
+import { Redirect } from "./components/Redirect";
 
 export default function Home() {
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg-primary)" }}>
       <Appbar />
+      <Redirect />
 
       {/* ===== HERO SECTION ===== */}
       <section

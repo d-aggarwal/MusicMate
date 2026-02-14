@@ -67,6 +67,12 @@ export async function GET(request: NextRequest) {
     const streams = await prismaClient.stream.findMany({
         where: {
             userId: creatorId ?? ""
+        },
+        include: {
+            _count: {
+                select: { upvotes: true }
+            },
+            upvotes: true
         }
     })
 
