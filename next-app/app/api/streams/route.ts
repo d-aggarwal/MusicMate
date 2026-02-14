@@ -54,11 +54,20 @@ export async function POST(request: NextRequest) {
             status: 200
         })
     } catch (error) {
+        console.error("Error creating stream:", error);
+        if (error instanceof z.ZodError) {
+            return NextResponse.json({
+                message: 'Invalid request body',
+                errors: error.issues
+            }, {
+                status: 411
+            });
+        }
         return NextResponse.json({
-            message: 'Invalid request body'
+            message: error instanceof Error ? error.message : 'Something went wrong'
         }, {
-            status: 411
-        })
+            status: 500
+        });
     }
 }
 
